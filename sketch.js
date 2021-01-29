@@ -1,150 +1,83 @@
 const Engine = Matter.Engine;
-const World= Matter.World;
+const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
-var engine,world;
-var ground,platform1,platform2;
-
-var block1,block2,block3,block4,block5,block6,block7,block8,
-block9,block10,block11,block12,block13,block14,block15,block16;
-
-var score = 0;
-function preload(){
-  polygonImg = loadImage("Images/hexagon1.png");
-  //legoImg = loadImage("Images/lego_logo.jpeg");
+var hero, ground, fly, box1, box2, box3, box4, box5, box6, box7, box8, box9, box10, box11, box12, box13, box14, box15, box16, box17, box18, box19, box20
+var monster, bg
+function preload() {
+//preload the images here
+ bg = loadImage("GamingBackground.png")
 }
 
 function setup() {
-  createCanvas(1500,600);
-
+  createCanvas(1300, 600);
   engine = Engine.create();
   world = engine.world;
 
-  //var lego = createSprite(50,50,20,20);
-  //lego.addImage("legoImage",legoImg);
-  //lego.scale = 0.4;
+  hero = new Hero(550, 100, 30)
+  ground = new Ground(650, 550, 1300,40)
+  monster = new Monster(1100,100,30)
 
-  platform1 = new Ground(424,554,720,10);
-  ground = new Ground(750,580,1500,24);
-  
-  var polygon_options ={
-    'restitution':0.02,
-    'friction':0.5,
-    'density':1.2
-  }
-  polygon = Bodies.circle(1200,450,30,polygon_options);
-  World.add(world,polygon);
+  box1 = new Box(900, 100, 70, 70);
+    box2 = new Box(900, 100, 70, 70);
+    box3 = new Box(900, 100, 70, 70);
+    box4 = new Box(900, 100, 70, 70);
+    box5 = new Box(900, 100, 70, 70);
+    box6 = new Box(900, 100, 70, 70);
+    box7 = new Box(800, 100, 70, 70);
+    box8 = new Box(800, 100, 70, 70);
+    box9 = new Box(800, 100, 70, 70);
+    box10 = new Box(800, 100, 70, 70);
+    box11 = new Box(800, 100, 70, 70);
+    box12 = new Box(800, 100, 70, 70);
+    box13 = new Box(700, 100, 70, 70);
+    box14 = new Box(700, 100, 70, 70);
+    box15 = new Box(700, 100, 70, 70);
+    box16 = new Box(700, 100, 70, 70);
+    box17 = new Box(700, 100, 70, 70);
+    box18 = new Box(700, 100, 70, 70);
+    box19 = new Box(700, 100, 70, 70);
+    box20 = new Box(700, 100, 70, 70);
 
-  block1 = new Block7(125,511);
-  block2 = new Block7(225,511);
-  block3 = new Block7(325,511);
-  block4 = new Block7(425,511);
-  block5 = new Block7(525,511);
-  block6 = new Block7(625,511);
-  block7 = new Block7(725,511);
+  fly = new Fly(hero.body, {x: hero.body.position.x, y: 0})
+  fly = new Fly(monster.body, {x: monster.body.position.x, y: 0})
 
-  block8 = new Block5(225,450);
-  block9 = new Block5(325,450);
-  block10 = new Block5(425,450);
-  block11 = new Block5(525,450);
-  block12 = new Block5(625,450);
-  
-  block13 = new Block3(325,400);
-  block14 = new Block3(425,400);
-  block15 = new Block3(525,400);
-
-  block16 = new Block1(425,340);
-
-  slingshot = new Slingshot(this.polygon,{x:1200,y:450});
 }
 
 function draw() {
-  background(0);  
+  background(bg);
+
   Engine.update(engine);
 
-  fill(255,20,147);
-  textSize(40);
-  text("score :"+score,1100,120);
-  console.log(score);
-
-  fill("#00FFFF")
-  textSize(40);
-  text("Drag and release the polygon to hit lego blocks.",300,60);
-
-  platform1.display();
-  ground.display();
-  
-  imageMode(CENTER);
-  image(polygonImg,polygon.position.x,polygon.position.y,60,50);
-
-  fill("yellow")
-  block1.display();
-  block1.score();
-
-  block2.display();
-  block2.score();
-
-  block3.display();
-  block3.score();
-
- block4.display();
- block4.score();
-
-  block5.display();
-  block5.score();
-
-  block6.display();
-  block6.score();
-
-  block7.display();
-  block7.score();
-
-  fill("blue")
-  block8.display();
-  block8.score();
-
-  block9.display();
-  block9.score();
-
-  block10.display();
-  block10.score();
-
-  block11.display();
-  block11.score();
-
-  block12.display();
-  block12.score();
-
-  fill("orange")
-  block13.display();
-  block13.score();
-
-  block14.display();
-  block14.score();
-
-  block15.display();
-  block15.score();
-  
-  fill("purple")
-  block16.display();
-  block16.score();
-
-  slingshot.display();
-
-  drawSprites();
+  ground.display()
+  hero.display()
+  fly.display()
+  box1.display();
+  box2.display();
+  box3.display();
+  box4.display();
+  box5.display();
+  box6.display();
+  box7.display();
+  box8.display();
+  box9.display();
+  box10.display();
+  box11.display();
+  box12.display();
+  box13.display();
+  box14.display();
+  box15.display();
+  box16.display();
+  box17.display();
+  box18.display();
+  box19.display();
+  box20.display();
+  monster.display()
 }
 
-function mouseDragged(){
-  Matter.Body.setPosition(this.polygon, {x: mouseX , y: mouseY});
+function mouseDragged() {
+  Matter.Body.setPosition(hero.body, {x: mouseX, y: mouseY})
 }
 
-function mouseReleased(){
-  slingshot.fly();
-}
 
-//function keyPressed(){
-  //if(keyCode === 32){
-   // slingshot.attach(this.polygon);
- // }
-//}
